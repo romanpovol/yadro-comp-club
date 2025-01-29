@@ -1,13 +1,13 @@
-#include <sstream>
 #include "parser.hpp"
-#include "validator.hpp"
+
+#include <sstream>
+
 #include "exceptions.hpp"
+#include "validator.hpp"
 
 parser::parser(const std::string &filename) : m_filestream(filename) {}
 
-parser::~parser() {
-    m_filestream.close();
-}
+parser::~parser() { m_filestream.close(); }
 
 input_data parser::parse() {
     input_data data;

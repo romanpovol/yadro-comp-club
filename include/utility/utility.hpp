@@ -1,15 +1,15 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
-#include <cstdio>
 #include <cstdint>
-#include <string>
+#include <cstdio>
 #include <optional>
+#include <string>
 #include <vector>
 
 struct my_time {
 public:
-    explicit my_time(const std::string& time);
+    explicit my_time(const std::string &time);
     explicit my_time(std::int32_t hours, std::int32_t minutes);
 
     my_time() = default;
@@ -33,14 +33,14 @@ private:
     std::int32_t m_hours;
 };
 
-enum class input_event_type : std::size_t  {
+enum class input_event_type : std::size_t {
     client_arrived = 1,
-    client_sat = 2, // table number is required
+    client_sat = 2,  // table number is required
     client_waiting = 3,
     client_left = 4,
 };
 
-enum class output_event_type : std::size_t  {
+enum class output_event_type : std::size_t {
     client_left_club = 11,
     client_sat_down_at_vacant_table = 12,
     error = 13
@@ -52,4 +52,4 @@ const std::string ERROR_PLACE_IS_BUSY = "PlaceIsBusy";
 const std::string ERROR_CLIENT_UNKNOWN = "ClientUnknown";
 const std::string ERROR_I_CAN_WAIT_NO_LONGER = "ICanWaitNoLonger!";
 
-#endif // UTILITY_H
+#endif  // UTILITY_H

@@ -1,7 +1,9 @@
+#include "validator.hpp"
+
 #include <iostream>
 #include <sstream>
+
 #include "doctest.h"
-#include "validator.hpp"
 #include "parser.hpp"
 
 TEST_CASE("check line is over") {

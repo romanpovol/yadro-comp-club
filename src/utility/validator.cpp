@@ -14,9 +14,7 @@ void validator::validate_end_of_line(std::stringstream &sstream) const {
 
 std::size_t validator::validate_positive_integer(const std::string &value) const {
     if (value.empty() || value[0] < '1' || value[0] > '9' ||
-        !std::all_of(value.begin(), value.end(), [](char c) {
-            return '0' <= c && c <= '9';
-        })) {
+        !std::all_of(value.begin(), value.end(), [](char c) { return '0' <= c && c <= '9'; })) {
         throw error_in_input_file_exception(m_line);
     }
     return stoul(value);
@@ -52,9 +50,8 @@ input_event_type validator::validate_operation_type(const std::string &type) con
     return static_cast<input_event_type>(stoul(type));
 }
 
-void validator::validate_events_chronological_order(
-        my_time previous_time,
-        my_time curren_time) const {
+void validator::validate_events_chronological_order(my_time previous_time,
+                                                    my_time curren_time) const {
     if (curren_time < previous_time) {
         throw error_in_input_file_exception(m_line);
     }

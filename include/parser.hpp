@@ -3,8 +3,8 @@
 
 #include <fstream>
 
-#include "utility.hpp"
 #include "data.hpp"
+#include "utility.hpp"
 
 static const char WORD_DELIMETER = ' ';
 static const char WORD_ENDLINE = '\n';
@@ -39,4 +39,4 @@ private:
     std::vector<event> parse_events(std::size_t number_of_tables);
 };
 
-#endif // PARSER_H
+#endif  // PARSER_H

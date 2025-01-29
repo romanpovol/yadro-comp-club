@@ -1,5 +1,7 @@
-#include <algorithm>
 #include "executor.hpp"
+
+#include <algorithm>
+
 #include "parser.hpp"
 
 executor::executor(const std::string &input_file, std::ostream &ostream) : m_ostream(ostream) {
@@ -14,7 +16,7 @@ executor::executor(const std::string &input_file, std::ostream &ostream) : m_ost
 
 int executor::run() {
     m_ostream << m_input_data.m_opening_time.to_string() << '\n';
-    for (auto const &event: m_input_data.m_events) {
+    for (auto const &event : m_input_data.m_events) {
         switch (event.m_type) {
             case input_event_type::client_arrived: {
                 client_arrived(event);
@@ -39,14 +41,14 @@ int executor::run() {
         }
     }
 
-    std::vector <std::string> clients_names;
+    std::vector<std::string> clients_names;
     clients_names.reserve(m_clients_status.size());
-    for (auto const &[client_name, status]: m_clients_status) {
+    for (auto const &[client_name, status] : m_clients_status) {
         clients_names.emplace_back(client_name);
     }
 
     std::sort(clients_names.begin(), clients_names.end());
-    for (auto const &client_name: clients_names) {
+    for (auto const &client_name : clients_names) {
         client_left_club(client_name, m_input_data.m_closing_time);
     }
 
@@ -61,8 +63,8 @@ int executor::run() {
 }
 
 void executor::print_input_event(const event &event) {
-    m_ostream << event.m_time.to_string() << ' ' << static_cast<std::size_t>(event.m_type)
-              << ' ' << event.m_client_name;
+    m_ostream << event.m_time.to_string() << ' ' << static_cast<std::size_t>(event.m_type) << ' '
+              << event.m_client_name;
     if (event.m_table_number.has_value()) {
         m_ostream << ' ' << event.m_table_number.value();
     }
@@ -70,13 +72,14 @@ void executor::print_input_event(const event &event) {
 }
 
 void executor::print_error(my_time time, const std::string &error_message) {
-    m_ostream << time.to_string() << ' ' << static_cast<std::size_t>(output_event_type::error) << ' ' << error_message
-              << '\n';
+    m_ostream << time.to_string() << ' ' << static_cast<std::size_t>(output_event_type::error)
+              << ' ' << error_message << '\n';
 }
 
 void executor::client_left_club(const std::string &client_name, my_time time) {
-    m_ostream << time.to_string() << ' ' << static_cast<std::size_t>(output_event_type::client_left_club) << ' '
-              << client_name << '\n';
+    m_ostream << time.to_string() << ' '
+              << static_cast<std::size_t>(output_event_type::client_left_club) << ' ' << client_name
+              << '\n';
 
     if (m_table_number_by_client.find(client_name) != m_table_number_by_client.end()) {
         std::size_t previous_table = m_table_number_by_client[client_name];
@@ -88,15 +91,16 @@ void executor::client_left_club(const std::string &client_name, my_time time) {
 
 void executor::update_information_about_table(std::size_t number, my_time current_time) {
     if (m_information_about_tables[number].m_time_when_table_became_taken.has_value()) {
-
-        // take diff between the moment when client sat down at the table and the current moment (got up from the table)
-        my_time time_when_table_begin_busy = m_information_about_tables[number].m_time_when_table_became_taken.value();
+        // take diff between the moment when client sat down at the table and the current moment
+        // (got up from the table)
+        my_time time_when_table_begin_busy =
+            m_information_about_tables[number].m_time_when_table_became_taken.value();
         my_time diff_time = current_time - time_when_table_begin_busy;
 
         // updating information about the table
         m_information_about_tables[number].m_how_long_was_table_taken += diff_time;
         m_information_about_tables[number].m_revenue +=
-                diff_time.rounded_up_number_of_hours() * m_input_data.m_price_per_hour;
+            diff_time.rounded_up_number_of_hours() * m_input_data.m_price_per_hour;
         m_information_about_tables[number].m_time_when_table_became_taken.reset();
     } else {
         m_information_about_tables[number].m_time_when_table_became_taken.emplace(current_time);
@@ -136,7 +140,8 @@ void executor::client_sat(const event &event) {
         return;
     }
 
-    // if client was sitting at another table up to this point, then we must update the info for this previous table
+    // if client was sitting at another table up to this point, then we must update the info for
+    // this previous table
     if (m_table_number_by_client.find(event.m_client_name) != m_table_number_by_client.end()) {
         std::size_t previous_table_number = m_table_number_by_client[event.m_client_name];
         update_information_about_table(previous_table_number, event.m_time);
@@ -208,8 +213,9 @@ void executor::client_left_from_table(const event &event) {
 void executor::client_from_queue_sat(my_time time, std::size_t table_number) {
     std::string client_from_queue = m_clients_queue.front();
     m_clients_queue.pop();
-    m_ostream << time.to_string() << ' ' << static_cast<std::size_t>(output_event_type::client_sat_down_at_vacant_table)
-              << ' ' << client_from_queue << ' ' << table_number << '\n';
+    m_ostream << time.to_string() << ' '
+              << static_cast<std::size_t>(output_event_type::client_sat_down_at_vacant_table) << ' '
+              << client_from_queue << ' ' << table_number << '\n';
 
     update_information_about_table(table_number, time);
     m_free_table_numbers.erase(table_number);

@@ -1,9 +1,9 @@
 #ifndef VALIDATOR_HPP
 #define VALIDATOR_HPP
 
-#include "utility.hpp"
-
 #include <string>
+
+#include "utility.hpp"
 
 struct validator {
 public:
@@ -27,4 +27,4 @@ private:
     std::string m_line;
 };
 
-#endif // VALIDATOR_HPP
+#endif  // VALIDATOR_HPP

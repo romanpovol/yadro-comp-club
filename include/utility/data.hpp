@@ -1,11 +1,12 @@
 #ifndef DATA_HPP
 #define DATA_HPP
 
-#include <cstdio>
 #include <cstdint>
-#include <string>
+#include <cstdio>
 #include <optional>
+#include <string>
 #include <vector>
+
 #include "utility.hpp"
 
 struct event {
@@ -14,7 +15,8 @@ struct event {
     std::string m_client_name;
     std::optional<std::size_t> m_table_number;
 
-    event(my_time event_time, input_event_type event_type, const std::string &client_name, std::optional<std::size_t> table_number);
+    event(my_time event_time, input_event_type event_type, const std::string &client_name,
+          std::optional<std::size_t> table_number);
 };
 
 struct input_data {
@@ -25,4 +27,4 @@ struct input_data {
     std::vector<event> m_events;
 };
 
-#endif //DATA_HPP
+#endif  // DATA_HPP
