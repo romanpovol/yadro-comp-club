@@ -9,8 +9,8 @@ int main(int argc, char *argv[]) {
     }
     std::string inputfile = argv[1];
     try {
-        Executor executor();
-        return executor.run(inputfile);
+        executor executor(inputfile);
+        return executor.run();
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
         return 1;
